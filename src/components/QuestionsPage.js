@@ -8,6 +8,9 @@ const QuestionsPage = (props) => {
     
     const [questions,setQuestions] = useState([])
     const [dataRendered, setDataRendered] = useState(false)
+    const [score,setScore] = useState(0)
+    const [gameOver, setGameOver]= useState(false)
+
      const randomize = (arr) => {
          const tempArr = [...arr]
          const newArr = []
@@ -55,10 +58,24 @@ const QuestionsPage = (props) => {
              }
         ))
     }
+
+    const submit = () => {
+        const tempScore = questions.map(quiz => quiz.isCorrect).reduce((score,value) => {
+            if(value)
+            score++
+
+            return score
+        },0)
+
+        setScore(tempScore)
+        setGameOver(prev => !prev)
+    }
+    
                                       
     const questionsMapped = questions.map(
                               value => <Question
                                         qna = {value}
+                                        gameOver={gameOver}
                                         toggle= {toggle} 
                                         />)
                               
@@ -67,8 +84,11 @@ const QuestionsPage = (props) => {
         <div>
         {dataRendered ? questionsMapped : <h1>Questions Loading </h1>}
         {dataRendered && <div className="submit-container">
-        <button className="submit"> Submit Answers </button>
+        <button className="submit" onClick={submit}> {gameOver ? "Play Again" : "Submit Answers"}
+         </button>
         </div>}
+        {gameOver && <div className="score"> You scored {score}/5  </div>}
+
         </div>
     )
 }

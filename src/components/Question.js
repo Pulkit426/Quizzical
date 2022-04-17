@@ -11,28 +11,11 @@ const Question = (props) => {
         return htmlstr
     }
     
-    // const temp = [...props.qna.incorrect_answers, props.qna.correct_answer]
-    // const optionVal= temp.map((option,index) => {
-    //     return {id: index+1,
-    //             value: option,
-    //             isCorrect: false,
-    //             isHeld: false}
-    // })
-    // console.log(optionVal)
-    // const [options, setOptions] = useState(optionVal)
     
-    // const toggle = (id) => {
-    //     setOptions(prevOptions => prevOptions.map(
-    //                               option => {
-    //                               if(option.id===id) {
-    //                                   option.isHeld = !option.isHeld
-    //                                   console.log("state changed")}
-    //                                 else
-    //                                     option.isHeld= false  
-    //                                   return option}))
-    // }
     const optionsMapped = props.qna.options.map(option => <Option value={option} 
                                                                   currentAns= {props.qna.currentAns}
+                                                                  gameOver={props.gameOver}
+                                                                  isCorrect = {props.qna.isCorrect}
                                                         onClick={
                                     ()=>props.toggle(props.qna.id,option)}
                                      />)
