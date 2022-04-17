@@ -39,16 +39,27 @@ const QuestionsPage = (props) => {
             })  
     },[])
     
-    console.log(questions)
+    console.table(questions)
     
-    const toggle = () => {
-        
+    const toggle = (id,value) => {
+        console.log('clicked')
+        setQuestions(prevQuestions => prevQuestions.map(
+             ques => {
+                 if(ques.id === id){
+                     ques.currentAns = value
+
+                     if(ques.correctAns === value)
+                     ques.isCorrect = true
+                 }
+                 return ques
+             }
+        ))
     }
                                       
     const questionsMapped = questions.map(
                               value => <Question
                                         qna = {value}
-                                        // toggle= {toggle} 
+                                        toggle= {toggle} 
                                         />)
                               
    

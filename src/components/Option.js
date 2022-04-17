@@ -3,7 +3,7 @@ import '../index.css'
 
 const Option = (props) => {
     const styles = {
-        "backgroundColor": props.isHeld ? "green" : null
+        "backgroundColor": props.currentAns === props.value ? "green" : null
     }
     return (
         <div>

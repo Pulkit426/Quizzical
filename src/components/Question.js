@@ -32,8 +32,9 @@ const Question = (props) => {
     //                                   return option}))
     // }
     const optionsMapped = props.qna.options.map(option => <Option value={option} 
-                                    //                     onClick={
-                                    // ()=>props.toggle(props.qna.id,props.qna.options.id)}
+                                                                  currentAns= {props.qna.currentAns}
+                                                        onClick={
+                                    ()=>props.toggle(props.qna.id,option)}
                                      />)
 
 
