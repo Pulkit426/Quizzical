@@ -16,16 +16,15 @@ const Question = (props) => {
                                                                   currentAns= {props.qna.currentAns}
                                                                   gameOver={props.gameOver}
                                                                   isCorrect = {props.qna.isCorrect}
-                                                        onClick={
-                                    ()=>props.toggle(props.qna.id,option)}
-                                     />)
+                                                                  correctAns={props.qna.correctAns}
+                                                                  onClick={()=>props.toggle(props.qna.id,option)} />)
 
 
                                   
     
     return (
         <div>
-            <h4 style= {{"color" : "#293264"}}> {unescape(filtered(props.qna.question))} </h4>
+            <h4 className="question" > {unescape(filtered(props.qna.question))} </h4>
            <div className="options-container">
             {optionsMapped}
            </div>

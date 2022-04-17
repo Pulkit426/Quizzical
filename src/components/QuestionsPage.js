@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import React,{useState,useEffect} from 'react'
 import { nanoid } from 'nanoid'
@@ -24,23 +25,26 @@ const QuestionsPage = (props) => {
          return newArr
      }
 
-       useEffect(() => { 
-       fetch("https://opentdb.com/api.php?amount=5&category=21&difficulty=easy&type=multiple")
-            .then(result => result.json())
-            .then(json => {
-                setQuestions(json.results.map(quiz => {
-                    return {
-                        id: nanoid(),
-                        question: quiz.question,
-                        options: randomize([...quiz.incorrect_answers,quiz.correct_answer]),
-                        correctAns: quiz.correct_answer,
-                        currentAns : '',
-                        isCorrect: false,
-                    }
-                }))    
-                setDataRendered(true)
-            })  
-    },[])
+     const allNewQuestions = () => {
+        fetch("https://opentdb.com/api.php?amount=5&category=9&difficulty=easy&type=multiple")
+        .then(result => result.json())
+        .then(json => {
+            setQuestions(json.results.map(quiz => {
+                return {
+                    id: nanoid(),
+                    question: quiz.question,
+                    options: randomize([...quiz.incorrect_answers,quiz.correct_answer]),
+                    correctAns: quiz.correct_answer,
+                    currentAns : '',
+                    isCorrect: false,
+                }
+            }))    
+            setDataRendered(true)
+        })  
+
+     }
+
+       useEffect(() => {allNewQuestions()},[])
     
     console.table(questions)
     
@@ -60,16 +64,27 @@ const QuestionsPage = (props) => {
     }
 
     const submit = () => {
-        const tempScore = questions.map(quiz => quiz.isCorrect).reduce((score,value) => {
+       if(gameOver){
+        setDataRendered(false)
+        allNewQuestions()
+        setScore(0)
+        setGameOver(false)
+
+
+       }
+
+       else{
+            const tempScore = questions.map(quiz => quiz.isCorrect).reduce((score,value) => {
             if(value)
             score++
 
             return score
-        },0)
+            },0)
 
-        setScore(tempScore)
-        setGameOver(prev => !prev)
-    }
+            setScore(tempScore)
+            setGameOver(prev => !prev)
+       }    
+    }   
     
                                       
     const questionsMapped = questions.map(
@@ -83,11 +98,12 @@ const QuestionsPage = (props) => {
     return (
         <div>
         {dataRendered ? questionsMapped : <h1>Questions Loading </h1>}
+        {gameOver && <div className="score"> You scored {score}/5  </div>}
         {dataRendered && <div className="submit-container">
         <button className="submit" onClick={submit}> {gameOver ? "Play Again" : "Submit Answers"}
          </button>
         </div>}
-        {gameOver && <div className="score"> You scored {score}/5  </div>}
+        
 
         </div>
     )
